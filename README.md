@@ -145,7 +145,6 @@ Usage:
 * [`doWhilst`](#doWhilst)
 * [`until`](#until)
 * [`doUntil`](#doUntil)
-* [`forever`](#forever)
 * [`waterfall`](#waterfall)
 * [`compose`](#compose)
 * [`seq`](#seq)
@@ -864,30 +863,6 @@ The inverse of [`whilst`](#whilst).
 ### doUntil(fn, test, callback)
 
 Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`.
-
----------------------------------------
-
-<a name="forever" />
-### forever(fn, errback)
-
-Calls the asynchronous function `fn` with a callback parameter that allows it to
-call itself again, in series, indefinitely.
-
-If an error is passed to the callback then `errback` is called with the
-error, and execution stops, otherwise it will never be called.
-
-```js
-async.forever(
-    function(next) {
-        // next is suitable for passing to things that need a callback(err [, whatever]);
-        // it will result in this function being called again.
-    },
-    function(err) {
-        // if next is called with a value in its first parameter, it will appear
-        // in here as 'err', and execution will stop.
-    }
-);
-```
 
 ---------------------------------------
 
