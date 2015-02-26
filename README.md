@@ -21,7 +21,6 @@ priority queue
 * [`queue`](#queue)
 * [`priorityQueue`](#priorityQueue)
 * [`retry`](#retry)
-* [`apply`](#apply)
 * [`nextTick`](#nextTick)
 
 ### Utils
@@ -95,7 +94,6 @@ async.each(openFiles, function(file, callback) {
 
 ---------------------------------------
 
-<a name="forEachSeries" />
 <a name="eachSeries" />
 ### eachSeries(arr, iterator, callback)
 
@@ -418,57 +416,6 @@ async.auto({
 });
 ```
 
-
----------------------------------------
-
-<a name="apply" />
-### apply(function, arguments..)
-
-Creates a continuation function with some arguments already applied.
-
-Useful as a shorthand when combined with other control flow functions. Any arguments
-passed to the returned function are added to the arguments originally passed
-to apply.
-
-__Arguments__
-
-* `function` - The function you want to eventually apply all arguments to.
-* `arguments...` - Any number of arguments to automatically apply when the
-  continuation is called.
-
-__Example__
-
-```js
-// using apply
-
-async.parallel([
-    async.apply(fs.writeFile, 'testfile1', 'test1'),
-    async.apply(fs.writeFile, 'testfile2', 'test2'),
-]);
-
-
-// the same process without using apply
-
-async.parallel([
-    function(callback){
-        fs.writeFile('testfile1', 'test1', callback);
-    },
-    function(callback){
-        fs.writeFile('testfile2', 'test2', callback);
-    }
-]);
-```
-
-It's possible to pass any number of additional arguments when calling the
-continuation:
-
-```js
-node> var fn = async.apply(sys.puts, 'one');
-node> fn('two', 'three');
-one
-two
-three
-```
 
 ---------------------------------------
 

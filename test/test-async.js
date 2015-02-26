@@ -304,63 +304,6 @@ exports['series call in another context'] = function(test) {
     vm.runInNewContext(fn, sandbox);
 };
 
-
-exports['iterator'] = function(test){
-    var call_order = [];
-    var iterator = async.iterator([
-        function(){call_order.push(1);},
-        function(arg1){
-            test.equals(arg1, 'arg1');
-            call_order.push(2);
-        },
-        function(arg1, arg2){
-            test.equals(arg1, 'arg1');
-            test.equals(arg2, 'arg2');
-            call_order.push(3);
-        }
-    ]);
-    iterator();
-    test.same(call_order, [1]);
-    var iterator2 = iterator();
-    test.same(call_order, [1,1]);
-    var iterator3 = iterator2('arg1');
-    test.same(call_order, [1,1,2]);
-    var iterator4 = iterator3('arg1', 'arg2');
-    test.same(call_order, [1,1,2,3]);
-    test.equals(iterator4, undefined);
-    test.done();
-};
-
-exports['iterator empty array'] = function(test){
-    var iterator = async.iterator([]);
-    test.equals(iterator(), undefined);
-    test.equals(iterator.next(), undefined);
-    test.done();
-};
-
-exports['iterator.next'] = function(test){
-    var call_order = [];
-    var iterator = async.iterator([
-        function(){call_order.push(1);},
-        function(arg1){
-            test.equals(arg1, 'arg1');
-            call_order.push(2);
-        },
-        function(arg1, arg2){
-            test.equals(arg1, 'arg1');
-            test.equals(arg2, 'arg2');
-            call_order.push(3);
-        }
-    ]);
-    var fn = iterator.next();
-    var iterator2 = fn('arg1');
-    test.same(call_order, [2]);
-    iterator2('arg1','arg2');
-    test.same(call_order, [2,3]);
-    test.equals(iterator2.next(), undefined);
-    test.done();
-};
-
 exports['each'] = function(test){
     var args = [];
     async.each([1,3,2], eachIterator.bind(this, args), function(err){
@@ -502,23 +445,6 @@ exports['mapSeries error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
-};
-
-exports['apply'] = function(test){
-    test.expect(6);
-    var fn = function(){
-        test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
-    };
-    async.apply(fn, 1, 2, 3, 4)();
-    async.apply(fn, 1, 2, 3)(4);
-    async.apply(fn, 1, 2)(3, 4);
-    async.apply(fn, 1)(2, 3, 4);
-    async.apply(fn)(1, 2, 3, 4);
-    test.equals(
-        async.apply(function(name){return 'hello ' + name}, 'world')(),
-        'hello world'
-    );
-    test.done();
 };
 
 exports['nextTick'] = function(test){
