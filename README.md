@@ -21,7 +21,6 @@ priority queue
 * [`queue`](#queue)
 * [`priorityQueue`](#priorityQueue)
 * [`retry`](#retry)
-* [`iterator`](#iterator)
 * [`apply`](#apply)
 * [`nextTick`](#nextTick)
 
@@ -419,42 +418,6 @@ async.auto({
 });
 ```
 
-
----------------------------------------
-
-<a name="iterator" />
-### iterator(tasks)
-
-Creates an iterator function which calls the next function in the `tasks` array,
-returning a continuation to call the next one after that. It's also possible to
-“peek” at the next iterator with `iterator.next()`.
-
-This function is used internally by the `async` module, but can be useful when
-you want to manually control the flow of functions in series.
-
-__Arguments__
-
-* `tasks` - An array of functions to run.
-
-__Example__
-
-```js
-var iterator = async.iterator([
-    function(){ sys.p('one'); },
-    function(){ sys.p('two'); },
-    function(){ sys.p('three'); }
-]);
-
-node> var iterator2 = iterator();
-'one'
-node> var iterator3 = iterator2();
-'two'
-node> iterator3();
-'three'
-node> var nextfn = iterator2.next();
-node> nextfn();
-'three'
-```
 
 ---------------------------------------
 
