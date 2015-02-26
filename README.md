@@ -153,14 +153,11 @@ Usage:
 * [`applyEachSeries`](#applyEachSeries)
 * [`queue`](#queue)
 * [`priorityQueue`](#priorityQueue)
-* [`cargo`](#cargo)
 * [`auto`](#auto)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
 * [`apply`](#apply)
 * [`nextTick`](#nextTick)
-* [`times`](#times)
-* [`timesSeries`](#timesSeries)
 
 ### Utils
 
@@ -1143,70 +1140,6 @@ The same as [`queue`](#queue) only tasks are assigned a priority and completed i
 
 ---------------------------------------
 
-<a name="cargo" />
-### cargo(worker, [payload])
-
-Creates a `cargo` object with the specified payload. Tasks added to the
-cargo will be processed altogether (up to the `payload` limit). If the
-`worker` is in progress, the task is queued until it becomes available. Once
-the `worker` has completed some tasks, each callback of those tasks is called.
-Check out [this animation](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) for how `cargo` and `queue` work.
-
-While [queue](#queue) passes only one task to one of a group of workers
-at a time, cargo passes an array of tasks to a single worker, repeating
-when the worker is finished.
-
-__Arguments__
-
-* `worker(tasks, callback)` - An asynchronous function for processing an array of
-  queued tasks, which must call its `callback(err)` argument when finished, with
-  an optional `err` argument.
-* `payload` - An optional `integer` for determining how many tasks should be
-  processed per round; if omitted, the default is unlimited.
-
-__Cargo objects__
-
-The `cargo` object returned by this function has the following properties and
-methods:
-
-* `length()` - A function returning the number of items waiting to be processed.
-* `payload` - An `integer` for determining how many tasks should be
-  process per round. This property can be changed after a `cargo` is created to
-  alter the payload on-the-fly.
-* `push(task, [callback])` - Adds `task` to the `queue`. The callback is called
-  once the `worker` has finished processing the task. Instead of a single task, an array of `tasks`
-  can be submitted. The respective callback is used for every task in the list.
-* `saturated` - A callback that is called when the `queue.length()` hits the concurrency and further tasks will be queued.
-* `empty` - A callback that is called when the last item from the `queue` is given to a `worker`.
-* `drain` - A callback that is called when the last item from the `queue` has returned from the `worker`.
-
-__Example__
-
-```js
-// create a cargo object with payload 2
-
-var cargo = async.cargo(function (tasks, callback) {
-    for(var i=0; i<tasks.length; i++){
-      console.log('hello ' + tasks[i].name);
-    }
-    callback();
-}, 2);
-
-
-// add some items
-
-cargo.push({name: 'foo'}, function (err) {
-    console.log('finished processing foo');
-});
-cargo.push({name: 'bar'}, function (err) {
-    console.log('finished processing bar');
-});
-cargo.push({name: 'baz'}, function (err) {
-    console.log('finished processing baz');
-});
-```
-
----------------------------------------
 
 <a name="auto" />
 ### auto(tasks, [callback])
@@ -1494,43 +1427,6 @@ async.nextTick(function(){
 });
 call_order.push('one')
 ```
-
-<a name="times" />
-### times(n, callback)
-
-Calls the `callback` function `n` times, and accumulates results in the same manner
-you would use with [`map`](#map).
-
-__Arguments__
-
-* `n` - The number of times to run the function.
-* `callback` - The function to call `n` times.
-
-__Example__
-
-```js
-// Pretend this is some complicated async factory
-var createUser = function(id, callback) {
-  callback(null, {
-    id: 'user' + id
-  })
-}
-// generate 5 users
-async.times(5, function(n, next){
-    createUser(n, function(err, user) {
-      next(err, user)
-    })
-}, function(err, users) {
-  // we should now have 5 users
-});
-```
-
-<a name="timesSeries" />
-### timesSeries(n, callback)
-
-The same as [`times`](#times), only the iterator is applied to each item in `arr` in
-series. The next `iterator` is only called once the current one has completed.
-The results array will be in the same order as the original.
 
 
 ## Utils
