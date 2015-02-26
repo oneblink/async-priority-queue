@@ -164,8 +164,6 @@ Usage:
 
 ### Utils
 
-* [`log`](#log)
-* [`dir`](#dir)
 * [`noConflict`](#noConflict)
 
 
@@ -1536,65 +1534,6 @@ The results array will be in the same order as the original.
 
 
 ## Utils
-
-<a name="log" />
-### log(function, arguments)
-
-Logs the result of an `async` function to the `console`. Only works in Node.js or
-in browsers that support `console.log` and `console.error` (such as FF and Chrome).
-If multiple arguments are returned from the async function, `console.log` is
-called on each argument in order.
-
-__Arguments__
-
-* `function` - The function you want to eventually apply all arguments to.
-* `arguments...` - Any number of arguments to apply to the function.
-
-__Example__
-
-```js
-var hello = function(name, callback){
-    setTimeout(function(){
-        callback(null, 'hello ' + name);
-    }, 1000);
-};
-```
-```js
-node> async.log(hello, 'world');
-'hello world'
-```
-
----------------------------------------
-
-<a name="dir" />
-### dir(function, arguments)
-
-Logs the result of an `async` function to the `console` using `console.dir` to
-display the properties of the resulting object. Only works in Node.js or
-in browsers that support `console.dir` and `console.error` (such as FF and Chrome).
-If multiple arguments are returned from the async function, `console.dir` is
-called on each argument in order.
-
-__Arguments__
-
-* `function` - The function you want to eventually apply all arguments to.
-* `arguments...` - Any number of arguments to apply to the function.
-
-__Example__
-
-```js
-var hello = function(name, callback){
-    setTimeout(function(){
-        callback(null, {hello: name});
-    }, 1000);
-};
-```
-```js
-node> async.dir(hello, 'world');
-{hello: 'world'}
-```
-
----------------------------------------
 
 <a name="noConflict" />
 ### noConflict()
