@@ -1,116 +1,7 @@
 # Async.js
 
-[![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
-
-
-Async is a utility module which provides straight-forward, powerful functions
-for working with asynchronous JavaScript. Although originally designed for
-use with [Node.js](http://nodejs.org) and installable via `npm install async`,
-it can also be used directly in the browser.
-
-Async is also installable via:
-
-- [bower](http://bower.io/): `bower install async`
-- [component](https://github.com/component/component): `component install
-  caolan/async`
-- [jam](http://jamjs.org/): `jam install async`
-- [spm](http://spmjs.io/): `spm install async`
-
-Async provides around 20 functions that include the usual 'functional'
-suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
-for asynchronous control flow (`parallel`, `series`, `waterfall`…). All these
-functions assume you follow the Node.js convention of providing a single
-callback as the last argument of your `async` function.
-
-
-## Quick Examples
-
-```javascript
-async.map(['file1','file2','file3'], fs.stat, function(err, results){
-    // results is now an array of stats for each file
-});
-
-async.filter(['file1','file2','file3'], fs.exists, function(results){
-    // results now equals an array of the existing files
-});
-
-async.parallel([
-    function(){ ... },
-    function(){ ... }
-], callback);
-
-async.series([
-    function(){ ... },
-    function(){ ... }
-]);
-```
-
-There are many more functions available so take a look at the docs below for a
-full list. This module aims to be comprehensive, so if you feel anything is
-missing please create a GitHub issue for it.
-
-## Common Pitfalls
-
-### Binding a context to an iterator
-
-This section is really about `bind`, not about `async`. If you are wondering how to
-make `async` execute your iterators in a given context, or are confused as to why
-a method of another library isn't working as an iterator, study this example:
-
-```js
-// Here is a simple object with an (unnecessarily roundabout) squaring method
-var AsyncSquaringLibrary = {
-  squareExponent: 2,
-  square: function(number, callback){
-    var result = Math.pow(number, this.squareExponent);
-    setTimeout(function(){
-      callback(null, result);
-    }, 200);
-  }
-};
-
-async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result){
-  // result is [NaN, NaN, NaN]
-  // This fails because the `this.squareExponent` expression in the square
-  // function is not evaluated in the context of AsyncSquaringLibrary, and is
-  // therefore undefined.
-});
-
-async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result){
-  // result is [1, 4, 9]
-  // With the help of bind we can attach a context to the iterator before
-  // passing it to async. Now the square function will be executed in its
-  // 'home' AsyncSquaringLibrary context and the value of `this.squareExponent`
-  // will be as expected.
-});
-```
-
-## Download
-
-The source is available for download from
-[GitHub](http://github.com/caolan/async).
-Alternatively, you can install using Node Package Manager (`npm`):
-
-    npm install async
-
-__Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
-
-## In the Browser
-
-So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5.
-
-Usage:
-
-```html
-<script type="text/javascript" src="async.js"></script>
-<script type="text/javascript">
-
-    async.map(data, asyncProcess, function(err, results){
-        alert(results);
-    });
-
-</script>
-```
+fork of [caolan/async](https://github.com/caolan/async) that just includes
+priority queue
 
 ## Documentation
 
@@ -141,11 +32,6 @@ Usage:
 * [`series`](#seriestasks-callback)
 * [`parallel`](#parallel)
 * [`parallelLimit`](#parallellimittasks-limit-callback)
-* [`whilst`](#whilst)
-* [`doWhilst`](#doWhilst)
-* [`until`](#until)
-* [`doUntil`](#doUntil)
-* [`waterfall`](#waterfall)
 * [`queue`](#queue)
 * [`priorityQueue`](#priorityQueue)
 * [`auto`](#auto)
