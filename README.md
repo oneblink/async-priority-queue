@@ -351,8 +351,6 @@ async.mapLimit(['file1','file2','file3'], 1, fs.stat, function(err, results){
 <a name="filter" />
 ### filter(arr, iterator, callback)
 
-__Alias:__ `select`
-
 Returns a new array of all the values in `arr` which pass an async truth test.
 _The callback for each `iterator` call only accepts a single argument of `true` or
 `false`; it does not accept an error argument first!_ This is in-line with the
@@ -383,8 +381,6 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 <a name="filterSeries" />
 ### filterSeries(arr, iterator, callback)
 
-__Alias:__ `selectSeries`
-
 The same as [`filter`](#filter) only the `iterator` is applied to each item in `arr` in
 series. The next `iterator` is only called once the current one has completed.
 The results array will be in the same order as the original.
@@ -409,8 +405,6 @@ in series.
 
 <a name="reduce" />
 ### reduce(arr, memo, iterator, callback)
-
-__Aliases:__ `inject`, `foldl`
 
 Reduces `arr` into a single value using an async `iterator` to return
 each successive step. `memo` is the initial state of the reduction.
@@ -451,8 +445,6 @@ async.reduce([1,2,3], 0, function(memo, item, callback){
 
 <a name="reduceRight" />
 ### reduceRight(arr, memo, iterator, callback)
-
-__Alias:__ `foldr`
 
 Same as [`reduce`](#reduce), only operates on `arr` in reverse order.
 
@@ -554,8 +546,6 @@ async.sortBy([1,9,3,5], function(x, callback){
 <a name="some" />
 ### some(arr, iterator, callback)
 
-__Alias:__ `any`
-
 Returns `true` if at least one element in the `arr` satisfies an async test.
 _The callback for each iterator call only accepts a single argument of `true` or
 `false`; it does not accept an error argument first!_ This is in-line with the
@@ -584,8 +574,6 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
 
 <a name="every" />
 ### every(arr, iterator, callback)
-
-__Alias:__ `all`
 
 Returns `true` if every element in `arr` satisfies an async test.
 _The callback for each `iterator` call only accepts a single argument of `true` or
